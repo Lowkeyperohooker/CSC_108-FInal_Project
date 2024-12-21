@@ -1,6 +1,16 @@
 {
-    "name": "Python Dev Environment",
-    "image": "mcr.microsoft.com/devcontainers/python:3.10",
-    "postCreateCommand": "pip install -r requirements.txt"
-  }
-  
+  "name": "Python Environment",
+  "image": "mcr.microsoft.com/devcontainers/python:3.10", // Use the Python version you need
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python"
+      },
+      "extensions": ["ms-python.python"]
+    }
+  },
+  "postCreateCommand": "pip install -r requirements.txt",
+  "mounts": [
+    "source=/workspace/.venv,target=/workspace/.venv,type=bind"
+  ]
+}
