@@ -1,20 +1,16 @@
 from flask import Flask, request, jsonify
-from my_script import main_logic  # Import the script's logic
 
 app = Flask(__name__)
 
-@app.route("/")
-def home():
-    return "Welcome to my Python app!"
-
-@app.route("/process", methods=["POST"])
-def process():
-    data = request.json  # Get JSON input
-    input_data = data.get("input")
-    if input_data is None:
-        return jsonify({"error": "Missing 'input' in request"}), 400
-    result = main_logic(input_data)  # Use the script's logic
-    return jsonify({"result": result})
+@app.route("/", methods=["GET", "POST"])
+def run_script():
+    if request.method == "POST":
+        # Assume the script takes input from the user
+        input_data = request.json.get("input", "")
+        # Call your script's functionality here
+        result = f"Your input was: {input_data}"
+        return jsonify({"result": result})
+    return "Welcome to the Python script web service!"
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
