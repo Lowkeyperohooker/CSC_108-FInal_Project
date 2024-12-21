@@ -5,6 +5,8 @@ from sklearn.metrics.pairwise import linear_kernel, cosine_similarity
 from ast import literal_eval
 import sys
 
+
+
 # pd.set_option('display.max_rows', None)  # Show all rows
 pd.set_option('display.max_columns', None)  # Show all columns
 
