@@ -1,16 +1,32 @@
-from flask import Flask, request, jsonify
+from flask import Flask, jsonify, request
+from movie_recommender import MovieRecommender
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET", "POST"])
-def run_script():
-    if request.method == "POST":
-        # Assume the script takes input from the user
-        input_data = request.json.get("input", "")
-        # Call your script's functionality here
-        result = f"Your input was: {input_data}"
-        return jsonify({"result": result})
-    return "Welcome to the Python script web service!"
+# Initialize the recommender
+recommender = MovieRecommender("tmdb-movie-metadata/tmdb_5000_credits.csv", "tmdb-movie-metadata/tmdb_5000_movies.csv")
+recommender.prepare_data()
+recommender.enhance_features()
+recommender.build_content_similarity()
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+@app.route('/')
+def home():
+    return "Welcome to the Movie Recommendation API! Use /movies to list movies or /recommend to get recommendations."
+
+@app.route('/movies', methods=['GET'])
+def show_movies():
+    movies = recommender.show_movies().tolist()
+    return jsonify({"movies": movies})
+
+@app.route('/recommend', methods=['POST'])
+def recommend():
+    try:
+        data = request.json
+        title = data.get('title', '')
+        recommendations = recommender.get_recommendations(title)
+        return jsonify({"recommendations": recommendations.tolist()})
+    except KeyError:
+        return jsonify({"error": "Movie not found. Check the title and try again."}), 400
+
+if __name__ == '__main__':
+    app.run(debug=True)
