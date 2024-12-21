@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 from recommendation_system import MovieRecommender  # Import your MovieRecommender class
+import os
 
 app = Flask(__name__)
 
@@ -44,4 +45,9 @@ def recommend():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000, debug=True)
+    # app.run(host='0.0.0.0', port=10000, debug=True)
+    
+
+    PORT = int(os.environ.get("PORT", 10000))  # Render provides the PORT environment variable
+    app.run(host="0.0.0.0", port=PORT)
+
