@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Movies</title>
+    <link rel="stylesheet" href="/static/movies.css">
+</head>
+<body>
+    <header>
+        <h1>Available Movies</h1>
+    </header>
+    <main>
+        <section class="movies-list">
+            <ul>
+                {% for movie in movies %}
+                <li>{{ movie }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+        <section class="navigation">
+            <a href="/" class="back-link">Go Back to Home</a>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Movie Recommendation System. All rights reserved.</p>
+    </footer>
+</body>
+</html>

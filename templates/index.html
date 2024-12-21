@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>Movie Recommendation System</h1>
+    </header>
+    <main>
+        <section class="features-section">
+            <h2>Show Movies</h2>
+            <a href="/movies" class="feature-link">Show All Movies</a>
+        </section>
+
+        <section class="form-section">
+            <h2>Get Recommendations</h2>
+            <form id="recommend-form">
+                <label for="movie-title">Enter a movie title:</label><br>
+                <input type="text" id="movie-title" name="movie-title" placeholder="e.g., Inception" required><br>
+                <button type="button" onclick="getRecommendations()">Get Recommendations</button>
+            </form>
+        </section>
+
+        <section class="recommendations-section">
+            <h2>Recommendations</h2>
+            <ul id="recommendations"></ul>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2024 Movie Recommendation System. All rights reserved.</p>
+    </footer>
+    <script src="/static/script.js"></script>
+</body>
+</html>
