@@ -30,9 +30,14 @@ while True:
             recommendations = None
             try:
                 recommendations = recommender.get_recommendations(input('Paste here> '))
+                print(recommendations)
                 print("Recommendations\n")
-                for rec in recommendations:
-                    print(rec)
+                # for rec in recommendations:
+                #     print(rec)
+                # print()
+
+                for index, row in recommendations.iterrows():
+                    print(f"{row['title']} ({row['year']})")
                 print()
             except KeyError as e:
                 print(f"Error: {e}")

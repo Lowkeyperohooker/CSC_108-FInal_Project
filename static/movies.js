@@ -1,4 +1,3 @@
-// Function to handle movie title clicks using event delegation
 document.addEventListener("DOMContentLoaded", () => {
     const moviesList = document.querySelector(".movies-list");
 
@@ -9,11 +8,16 @@ document.addEventListener("DOMContentLoaded", () => {
             if (target.classList.contains("movie-item")) {
                 const movieTitle = target.getAttribute("data-title");
 
-                // Store selected movie title in sessionStorage
-                sessionStorage.setItem("selectedMovie", movieTitle);
+                if (movieTitle) {
+                    // Log the movie title to confirm it's being set
+                    console.log("Selected movie:", movieTitle);
 
-                // Redirect to the main page or any other target
-                window.location.href = "/"; // Adjust this URL if needed
+                    // Store the selected movie title in sessionStorage
+                    sessionStorage.setItem("selectedMovie", movieTitle);
+
+                    // Redirect to the index page
+                    window.location.href = "/";
+                }
             }
         });
     }

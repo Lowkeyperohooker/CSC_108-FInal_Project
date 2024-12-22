@@ -15,7 +15,7 @@
         <section class="movies-list">
             <ul>
                 {% for movie in movies %}
-                <li class="movie-item" onclick="fetchRecommendations('{{ movie }}')" data-title="{{ movie }}">
+                <li class="movie-item" data-title="{{ movie }}">
                     {{ movie }}
                 </li>
                 {% endfor %}
@@ -29,7 +29,6 @@
     <footer>
         <p>&copy; 2024 Movie Recommendation System. All rights reserved.</p>
     </footer>
-
 
     <script src="/static/movies.js"></script>
 </body>

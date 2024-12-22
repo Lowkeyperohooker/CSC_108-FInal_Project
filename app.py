@@ -4,6 +4,7 @@ from flask_caching import Cache
 import os
 import pickle
 import logging
+import pandas as pd
 
 # Initialize Flask app and cache
 app = Flask(__name__)
@@ -39,10 +40,11 @@ def home():
 @app.route('/movies', methods=['GET'])
 @cache.cached(timeout=300)  # Cache the response for 5 minutes
 def get_movies():
-    """Return a list of available movies."""
     try:
-        movies = recommender.show_movies().tolist()
-        return render_template('movies.html', movies=movies)
+        # Get sorted movie list from the recommender
+        movies = recommender.show_movies()
+        # Return the movies as a rendered HTML page
+        return render_template("movies.html", movies=movies)
     except Exception as e:
         logging.error(f"Error fetching movies: {str(e)}")
         return jsonify({'status': 'error', 'message': 'Failed to fetch movies.'}), 500
@@ -58,8 +60,22 @@ def recommend():
         return jsonify({'status': 'error', 'message': 'Movie title cannot be empty.'}), 400
 
     try:
-        recommendations = recommender.get_recommendations(title).tolist()
-        return jsonify({'status': 'success', 'recommendations': recommendations})
+        # Get recommendations based on the provided title
+        recommendations = recommender.get_recommendations(title)  # Assuming this returns a DataFrame
+
+        if isinstance(recommendations, pd.DataFrame):
+            # Convert DataFrame to a list of dictionaries
+            recommendations_list = recommendations.to_dict(orient='records')
+
+            # Format the recommendations list into a list of strings like "Title (Year)"
+            movie_titles = [f"{movie['title']} ({movie['year']})" for movie in recommendations_list]
+            
+            return jsonify({
+                'status': 'success',
+                'recommendations': movie_titles
+            })
+        else:
+            raise ValueError("Recommendations must be a DataFrame.")
     except KeyError:
         # Suggest similar titles if the movie is not found
         similar_titles = recommender.get_similar_titles(title)

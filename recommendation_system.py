@@ -84,16 +84,20 @@ class MovieRecommender:
         df_credits.columns = ['id', 'tittle', 'cast', 'crew']
         df_movies = df_movies.merge(df_credits, on='id')
 
-        return df_movies
+        df_movies['release_date'] = pd.to_datetime(df_movies['release_date'], errors='coerce')
+        df_movies['year'] = df_movies['release_date'].dt.year
+        df_movies['year'] = df_movies['year'].fillna(-1).astype(int)
 
-    def show_movies(self) -> pd.Series:
+        return df_movies
+    
+    def show_movies(self) -> list:
         """
-        Get a sorted list of all movie titles in the dataset.
+        Get a sorted list of all movie titles with their release years.
 
         Returns:
-            pd.Series: Alphabetically sorted list of movie titles
+            list: Alphabetically sorted list of movie titles with release years.
         """
-        return self.df_movies['title'].sort_values()
+        return sorted(f"{row['title']} ({row['year']})" for _, row in self.df_movies.iterrows())
 
     def _calculate_weighted_rating(self, x: pd.Series, m: float, C: float) -> float:
         """
@@ -167,7 +171,7 @@ class MovieRecommender:
             title (str): Title of the movie to base recommendations on
 
         Returns:
-            pd.Series: Series of 10 recommended movie titles
+            list: A list of dictionaries with recommended movie titles and release years.
 
         Raises:
             ValueError: If cosine similarity matrix hasn't been built
@@ -193,8 +197,10 @@ class MovieRecommender:
             sim_scores = sim_scores[1:11]  # Top 10 similar movies
             movie_indices = [i[0] for i in sim_scores]
 
+            # Return the recommendations with movie title and year
+            recommendations = self.df_movies[['title', 'year']].iloc[movie_indices]
             logging.info(f"Recommendations successfully retrieved for '{title}'.")
-            return self.df_movies['title'].iloc[movie_indices]
+            return recommendations
         except Exception as e:
             logging.error(f"Error while processing '{title}': {e}")
             raise

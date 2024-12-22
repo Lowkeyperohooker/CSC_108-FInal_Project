@@ -1,11 +1,14 @@
 async function getRecommendations() {
     const movieTitle = document.getElementById("movie-title").value.trim();
     const recommendationsList = document.getElementById("recommendations");
+    const errorMessage = document.getElementById("error-message");
 
-    recommendationsList.innerHTML = ""; // Clear previous recommendations
+    // Clear previous results and error messages
+    recommendationsList.innerHTML = "";
+    errorMessage.textContent = "";
 
     if (movieTitle) {
-        // Show loading indicator
+        // Show a loading indicator
         const loadingIndicator = document.createElement("li");
         loadingIndicator.textContent = "Fetching recommendations...";
         recommendationsList.appendChild(loadingIndicator);
@@ -19,43 +22,59 @@ async function getRecommendations() {
                 body: JSON.stringify({ title: movieTitle })
             });
 
+            // Process the response
             const data = await response.json();
             recommendationsList.innerHTML = ""; // Clear loading indicator
 
             if (response.ok && data.status === 'success') {
-                if (data.recommendations.length > 0) {
+                // Check if recommendations are available
+                if (data.recommendations && Array.isArray(data.recommendations) && data.recommendations.length > 0) {
                     data.recommendations.forEach(movie => {
                         const listItem = document.createElement("li");
-                        listItem.textContent = movie;
-                        listItem.classList.add("recommendation-item"); // Add a class for styling and functionality
+                        listItem.textContent = movie; // Display movie title and year
+                        listItem.classList.add("recommendation-item");
                         listItem.addEventListener("click", () => {
-                            document.getElementById("movie-title").value = movie; // Paste the clicked title into the input
+                            document.getElementById("movie-title").value = movie.split('(')[0].trim(); // Set input field with movie title
                         });
                         recommendationsList.appendChild(listItem);
                     });
                 } else {
                     recommendationsList.innerHTML = "<li>No recommendations found for this movie.</li>";
                 }
+            } else if (data.status === 'error') {
+                errorMessage.textContent = data.message || "No recommendations available.";
+                if (data.suggestions && Array.isArray(data.suggestions)) {
+                    const suggestionList = document.createElement("ul");
+                    suggestionList.textContent = "Did you mean:";
+                    data.suggestions.forEach(suggestion => {
+                        const suggestionItem = document.createElement("li");
+                        suggestionItem.textContent = suggestion;
+                        suggestionItem.classList.add("suggestion-item");
+                        suggestionItem.addEventListener("click", () => {
+                            document.getElementById("movie-title").value = suggestion;
+                            getRecommendations(); // Retry with the suggestion
+                        });
+                        suggestionList.appendChild(suggestionItem);
+                    });
+                    recommendationsList.appendChild(suggestionList);
+                }
             } else {
-                recommendationsList.innerHTML = `<li>${data.message || 'An error occurred.'}</li>`;
+                recommendationsList.innerHTML = "<li>An error occurred. Please try again later.</li>";
             }
         } catch (error) {
             console.error("Error fetching recommendations:", error);
             recommendationsList.innerHTML = "<li>Failed to fetch recommendations. Please try again later.</li>";
         }
     } else {
-        alert("Please enter a movie title!");
+        errorMessage.textContent = "Please enter a movie title!";
     }
 }
 
+// Attach the event listener when the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
-    const movieInput = document.getElementById("movie-title");
-    const selectedMovie = sessionStorage.getItem("selectedMovie"); // Retrieve the selected movie
-    if (selectedMovie) {
-        movieInput.value = selectedMovie; // Populate the input field
-        sessionStorage.removeItem("selectedMovie"); // Clear sessionStorage
-    }
-
-    // Attach event listener for the "Get Recommendations" button
-    document.getElementById("get-recommendations-btn").addEventListener("click", getRecommendations);
+    const form = document.getElementById("recommend-form");
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        getRecommendations();
+    });
 });
