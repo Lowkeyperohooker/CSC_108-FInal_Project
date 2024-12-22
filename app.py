@@ -51,3 +51,4 @@ if __name__ == '__main__':
     PORT = int(os.environ.get("PORT", 10000))  # Render provides the PORT environment variable
     app.run(host="0.0.0.0", port=PORT)
 
+# web: gunicorn -w 4 -b 0.0.0.0:$PORT app:app
