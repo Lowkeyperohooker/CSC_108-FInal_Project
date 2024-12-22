@@ -1,10 +1,15 @@
 async function getRecommendations() {
-    const movieTitle = document.getElementById("movie-title").value;
+    const movieTitle = document.getElementById("movie-title").value.trim();
     const recommendationsList = document.getElementById("recommendations");
 
     recommendationsList.innerHTML = ""; // Clear previous recommendations
 
     if (movieTitle) {
+        // Show loading indicator
+        const loadingIndicator = document.createElement("li");
+        loadingIndicator.textContent = "Fetching recommendations...";
+        recommendationsList.appendChild(loadingIndicator);
+
         try {
             const response = await fetch('/recommend', {
                 method: 'POST',
@@ -15,19 +20,28 @@ async function getRecommendations() {
             });
 
             const data = await response.json();
+            recommendationsList.innerHTML = ""; // Clear loading indicator
 
-            if (data.status === 'success') {
-                data.recommendations.forEach(movie => {
-                    const listItem = document.createElement("li");
-                    listItem.textContent = movie;
-                    recommendationsList.appendChild(listItem);
-                });
+            if (response.ok && data.status === 'success') {
+                if (data.recommendations.length > 0) {
+                    data.recommendations.forEach(movie => {
+                        const listItem = document.createElement("li");
+                        listItem.textContent = movie;
+                        listItem.classList.add("recommendation-item"); // Add a class for styling and functionality
+                        listItem.addEventListener("click", () => {
+                            document.getElementById("movie-title").value = movie; // Paste the clicked title into the input
+                        });
+                        recommendationsList.appendChild(listItem);
+                    });
+                } else {
+                    recommendationsList.innerHTML = "<li>No recommendations found for this movie.</li>";
+                }
             } else {
-                recommendationsList.innerHTML = `<li>${data.message}</li>`;
+                recommendationsList.innerHTML = `<li>${data.message || 'An error occurred.'}</li>`;
             }
         } catch (error) {
             console.error("Error fetching recommendations:", error);
-            recommendationsList.innerHTML = "<li>Failed to fetch recommendations.</li>";
+            recommendationsList.innerHTML = "<li>Failed to fetch recommendations. Please try again later.</li>";
         }
     } else {
         alert("Please enter a movie title!");
@@ -41,5 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
         movieInput.value = selectedMovie; // Populate the input field
         sessionStorage.removeItem("selectedMovie"); // Clear sessionStorage
     }
-});
 
+    // Attach event listener for the "Get Recommendations" button
+    document.getElementById("get-recommendations-btn").addEventListener("click", getRecommendations);
+});

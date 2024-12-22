@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Movies</title>
-    <link rel="stylesheet" href="/static/movies.css">
+    <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <header>
-        <h1>Have You Seen This Movies</h1>
+        <h1>Available Movies</h1>
     </header>
 
     <main>
         <section class="movies-list">
             <ul>
                 {% for movie in movies %}
-                <li class="movie-item" data-title="{{ movie }}">{{ movie }}</li>
+                <li class="movie-item" onclick="fetchRecommendations('{{ movie }}')" data-title="{{ movie }}">
+                    {{ movie }}
+                </li>
                 {% endfor %}
             </ul>            
         </section>
@@ -27,6 +29,7 @@
     <footer>
         <p>&copy; 2024 Movie Recommendation System. All rights reserved.</p>
     </footer>
+
 
     <script src="/static/movies.js"></script>
 </body>

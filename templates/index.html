@@ -14,15 +14,17 @@
     <main>
         <section class="features-section">
             <h2>Movie Titles</h2>
-            <a href="/movies" class="feature-link">All Movie Titles</a>
+            <a href="/movies" class="feature-link">Browse All Movie Titles</a>
         </section>
 
         <section class="form-section">
             <h2>Get Recommendations</h2>
-            <form id="recommend-form">
+            <form id="recommend-form" onsubmit="event.preventDefault(); getRecommendations();">
                 <label for="movie-title">Enter a movie title:</label><br>
-                <input type="text" id="movie-title" name="movie-title" placeholder="e.g., Inception" required><br>
-                <button type="button" onclick="getRecommendations()">Get Recommendations</button>
+                <input type="text" id="movie-title" name="movie-title" placeholder="e.g., Inception" required>
+                <span id="error-message" class="error-message"></span>
+                <br>
+                <button type="submit">Get Recommendations</button>
             </form>
         </section>
 

@@ -3,105 +3,201 @@ body, h1, h2, p, ul, a {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
+    box-sizing: border-box;
 }
 
 body {
-    background-color: #f9f9f9;
+    background-color: #f8f9fa;
     color: #333;
     line-height: 1.6;
 }
 
 /* Header */
 header {
-    background-color: #6200ea;
+    background-color: #003366;
     color: white;
     text-align: center;
     padding: 20px 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    font-size: 2rem;
+    margin: 0;
 }
 
 /* Main Content */
 main {
-    width: 80%;
-    max-width: 800px;
+    width: 90%;
+    max-width: 900px;
     margin: 20px auto;
     background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-    margin-bottom: 10px;
-    color: #6200ea;
+    margin-bottom: 15px;
+    color: #003366;
+    font-size: 1.5rem;
 }
 
-/* Form Section */
+/* Enhanced Form Section */
 .form-section {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
 #recommend-form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#recommend-form:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+label {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #0056b3;
 }
 
 #movie-title {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
     font-size: 1rem;
-    width: 100%;
+    width: 80%;
+    max-width: 400px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-button {
-    padding: 10px;
-    background-color: #6200ea;
+#movie-title:focus {
+    border-color: #003366;
+    box-shadow: 0 0 5px rgba(0, 51, 102, 0.5);
+    outline: none;
+}
+
+button[type="submit"] {
+    padding: 12px 20px;
+    background-color: #003366;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-button:hover {
-    background-color: #3700b3;
+button[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+button[type="submit"]:active {
+    transform: scale(0.98);
+}
+
+.error-message {
+    color: #d9534f;
+    font-size: 0.9rem;
 }
 
 /* Features Section */
 .features-section {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    text-align: center;
 }
 
 .feature-link {
     display: inline-block;
-    margin-top: 10px;
+    margin-top: 15px;
     text-decoration: none;
-    color: #6200ea;
+    color: white;
     font-size: 1rem;
-    padding: 10px 15px;
-    border: 1px solid #6200ea;
-    border-radius: 4px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    padding: 10px 20px;
+    background-color: #003366;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .feature-link:hover {
-    background-color: #6200ea;
-    color: white;
+    background-color: #0056b3;
+    transform: translateY(-3px);
 }
 
 /* Recommendations Section */
 .recommendations-section ul {
     list-style: none;
     margin-top: 10px;
+    padding: 0;
+    text-align: center;
 }
 
 .recommendations-section ul li {
     background-color: #f1f1f1;
-    padding: 10px;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.recommendations-section ul li:hover {
+    background-color: #e9ecef;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+/* Movies List Section */
+.movies-list ul {
+    list-style: none;
+    margin: 20px 0;
+    padding: 0;
+}
+
+.movies-list li {
+    background-color: #f1f1f1;
     margin: 5px 0;
-    border-radius: 4px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.movies-list li:hover {
+    background-color: #e9ecef;
+    transform: scale(1.02);
+    cursor: pointer;
+}
+
+/* Navigation Section */
+.navigation {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.back-link {
+    text-decoration: none;
+    color: white;
+    background-color: #003366;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.back-link:hover {
+    background-color: #0056b3;
 }
 
 /* Footer */
@@ -109,7 +205,17 @@ footer {
     text-align: center;
     margin-top: 20px;
     padding: 10px 0;
-    background-color: #333;
+    background-color: #003366;
     color: white;
     border-radius: 8px;
+}
+
+/* Utility Classes */
+.hidden {
+    display: none;
+}
+
+/* Hover Effects for Interactivity */
+li:hover {
+    cursor: pointer;
 }
