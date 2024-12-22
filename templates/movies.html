@@ -8,15 +8,15 @@
 </head>
 <body>
     <header>
-        <h1>Available Movies</h1>
+        <h1>Have You Seen This Movies</h1>
     </header>
     <main>
         <section class="movies-list">
             <ul>
                 {% for movie in movies %}
-                <li>{{ movie }}</li>
+                <li class="movie-item" data-title="{{ movie }}">{{ movie }}</li>
                 {% endfor %}
-            </ul>
+            </ul>            
         </section>
         <section class="navigation">
             <a href="/" class="back-link">Go Back to Home</a>
