@@ -34,20 +34,12 @@ async function getRecommendations() {
     }
 }
 
-// Function to handle movie title click
 document.addEventListener("DOMContentLoaded", () => {
-    const movieItems = document.querySelectorAll(".movie-item");
-
-    movieItems.forEach(item => {
-        item.addEventListener("click", () => {
-            const movieTitle = item.getAttribute("data-title");
-            
-            // Use sessionStorage to pass data between pages
-            sessionStorage.setItem("selectedMovie", movieTitle);
-
-            // Redirect back to the main page
-            window.location.href = "/";
-        });
-    });
+    const movieInput = document.getElementById("movie-title");
+    const selectedMovie = sessionStorage.getItem("selectedMovie"); // Retrieve the selected movie
+    if (selectedMovie) {
+        movieInput.value = selectedMovie; // Populate the input field
+        sessionStorage.removeItem("selectedMovie"); // Clear sessionStorage
+    }
 });
 
