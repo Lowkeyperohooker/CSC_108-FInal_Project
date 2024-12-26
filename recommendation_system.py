@@ -136,28 +136,28 @@ class MovieRecommender:
         qualified_movies['score'] = qualified_movies.apply(self._calculate_weighted_rating, axis=1, m=m, C=C)
         self.df_movies = qualified_movies.sort_values('score', ascending=False).reset_index(drop=True)
 
-    def build_cosine_similarity(self, feature: str = 'overview', use_tfidf: bool = True):
-        """
-        Build a cosine similarity matrix based on the specified text feature.
+    # def build_cosine_similarity(self, feature: str = 'overview', use_tfidf: bool = True):
+    #     """
+    #     Build a cosine similarity matrix based on the specified text feature.
 
-        Args:
-            feature (str): Column name to use for similarity calculation (default: 'overview')
-            use_tfidf (bool): Whether to use TF-IDF vectorization (True) or Count vectorization (False)
+    #     Args:
+    #         feature (str): Column name to use for similarity calculation (default: 'overview')
+    #         use_tfidf (bool): Whether to use TF-IDF vectorization (True) or Count vectorization (False)
 
-        The method creates and stores:
-            - cosine_sim: Similarity matrix
-            - indices: Mapping of movie titles to matrix indices
-        """
-        self.df_movies[feature] = self.df_movies[feature].fillna('')
+    #     The method creates and stores:
+    #         - cosine_sim: Similarity matrix
+    #         - indices: Mapping of movie titles to matrix indices
+    #     """
+    #     self.df_movies[feature] = self.df_movies[feature].fillna('')
 
-        if use_tfidf:
-            vectorizer = TfidfVectorizer(stop_words='english')
-        else:
-            vectorizer = CountVectorizer(stop_words='english')
+    #     if use_tfidf:
+    #         vectorizer = TfidfVectorizer(stop_words='english')
+    #     else:
+    #         vectorizer = CountVectorizer(stop_words='english')
 
-        feature_matrix = vectorizer.fit_transform(self.df_movies[feature])
-        self.cosine_sim = linear_kernel(feature_matrix, feature_matrix)
-        self.indices = pd.Series(self.df_movies.index, index=self.df_movies['title'].str.lower()).drop_duplicates()
+    #     feature_matrix = vectorizer.fit_transform(self.df_movies[feature])
+    #     self.cosine_sim = linear_kernel(feature_matrix, feature_matrix)
+    #     self.indices = pd.Series(self.df_movies.index, index=self.df_movies['title'].str.lower()).drop_duplicates()
 
     def get_recommendations(self, title: str) -> pd.Series:
         """

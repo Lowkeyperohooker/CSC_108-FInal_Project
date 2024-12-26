@@ -1,4 +1,4 @@
-from recommendation_system import MovieRecommender
+from rec_sys_data import Data
 import sys
 
 
@@ -12,10 +12,8 @@ def main_menu():
 
 
 # Usage
-recommender = MovieRecommender("tmdb-movie-metadata/tmdb_5000_credits.csv", "tmdb-movie-metadata/tmdb_5000_movies.csv")
-recommender.prepare_data()
-recommender.enhance_features()
-recommender.build_content_similarity()
+data = Data()
+recommender = data.get_data()
 
 while True:
     match main_menu():

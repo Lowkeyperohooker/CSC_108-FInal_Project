@@ -1,34 +1,14 @@
 from flask import Flask, request, jsonify, render_template
-from recommendation_system import MovieRecommender  # Import your MovieRecommender class
 from flask_caching import Cache
+from rec_sys_data import Data
 import os
-import pickle
-import logging
 
 # Initialize Flask app and cache
 app = Flask(__name__)
 cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
 
-# Logging setup
-logging.basicConfig(level=logging.INFO)
-
-# Initialize or load the precomputed recommender
-if not os.path.exists('precomputed_data.pkl'):
-    logging.info("Precomputing data...")
-    recommender = MovieRecommender("tmdb-movie-metadata/tmdb_5000_credits.csv", 
-                                   "tmdb-movie-metadata/tmdb_5000_movies.csv")
-    recommender.prepare_data()
-    recommender.enhance_features()
-    recommender.build_content_similarity()
-    with open('precomputed_data.pkl', 'wb') as f:
-        pickle.dump(recommender, f)
-    logging.info("Data precomputed and saved to 'precomputed_data.pkl'.")
-else:
-    logging.info("Loading precomputed data from 'precomputed_data.pkl'...")
-    with open('precomputed_data.pkl', 'rb') as f:
-        recommender = pickle.load(f)
-    logging.info("Precomputed data loaded successfully.")
-
+data = Data()
+recommender = data.get_data()
 
 @app.route('/')
 def home():
